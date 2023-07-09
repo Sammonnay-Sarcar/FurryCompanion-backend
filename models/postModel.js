@@ -16,11 +16,7 @@ const postSchema = new mongoose.Schema({
       ref: "Comments",
     },
   ],
-  images: {
-    type: Array,
-    data: Buffer,
-    contentType: String,
-  },
+  images: [{ type: String }],
   status: {
     type: String,
     default: "Queued",

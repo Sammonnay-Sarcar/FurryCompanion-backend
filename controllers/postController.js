@@ -1,20 +1,25 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const postModel = require("../models/postModel");
+const Post = require("../models/postModel");
 const ErrorHandler = require("../utils/errorHandler");
 
 //Create a new post
 exports.createPost = catchAsyncErrors(async (req, res, next) => {
-  const { content } = req.body;
+  const { content, images } = req.body;
   const post = await Post.create({
     content,
     likes: 0,
     numOfComments: 0,
+    images,
   });
-  sendToken(user, 200, res);
+  res.status(200).json({
+    success: true,
+    post,
+  });
 });
 
 //Delete a post
 exports.deletePost = catchAsyncErrors(async (req, res, next) => {
+  // console.log(req.params.id);
   const post = await Post.findById(req.params.id);
   if (!post) {
     return next(
@@ -99,7 +104,7 @@ exports.getAllPosts = catchAsyncErrors(async (req, res, next) => {
   if (!post) {
     return next(new ErrorHandler("No post found"));
   }
-  res.success(200).json({
+  res.status(200).json({
     success: true,
     post,
   });

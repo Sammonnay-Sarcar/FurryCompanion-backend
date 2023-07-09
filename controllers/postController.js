@@ -1,6 +1,6 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const postModel = require("../models/postModel");
-const ErrorHandler = require("../utils/errorhandler");
+const ErrorHandler = require("../utils/errorHandler");
 
 //Create a new post
 exports.createPost = catchAsyncErrors(async (req, res, next) => {

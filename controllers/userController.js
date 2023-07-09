@@ -1,10 +1,11 @@
-const ErrorHandler = require("../utils/errorhandler");
+const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const User = require("../models/userModel");
 const sentToken = require("../utils/jwtToken");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const Address = require("../models/addressModel");
 
 //Register a user
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -208,5 +209,21 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "User deleted successfully",
+  });
+});
+
+//Add address
+exports.addAdress = catchAsyncErrors(async (req, res, next) => {
+  console.log("here");
+  let user = await User.findById(req.user.id);
+  const { locality, city, state, pinCode } = req.body;
+
+  console.log(user);
+  const newaddress = await Address.create({ locality, city, state, pinCode });
+  user.address.push(newaddress._id);
+  user.save();
+  res.status(200).json({
+    success: true,
+    user,
   });
 });

@@ -1,6 +1,7 @@
 const Pet = require("../models/petModel");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const ErrorHandler = require("../utils/errorhandler");
+const userTypeModel = require("../models/userTypeModel");
 //Register a pet
 exports.registerPet = catchAsyncErrors(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -52,5 +53,14 @@ exports.getAllPet = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     pet,
+  });
+});
+//Add new category
+exports.addCategory = catchAsyncErrors(async (req, res, next) => {
+  const { category } = req.body;
+  const newCategory = await userTypeModel.create(category);
+  res.status(200).json({
+    success: true,
+    newCategory,
   });
 });
